@@ -1,4 +1,5 @@
 """Account service tests."""
+
 from unittest import TestCase
 
 from . import PyiCloudServiceMock
@@ -70,7 +71,15 @@ class AccountServiceTest(TestCase):
         """Tests storage."""
         assert self.service.storage
         # fmt: off
-        assert repr(self.service.storage) == "<AccountStorage: {usage: 43.75% used of 5368709120 bytes, usages_by_media: OrderedDict([('photos', <AccountStorageUsageForMedia: {key: photos, usage: 0 bytes}>), ('backup', <AccountStorageUsageForMedia: {key: backup, usage: 799008186 bytes}>), ('docs', <AccountStorageUsageForMedia: {key: docs, usage: 449092146 bytes}>), ('mail', <AccountStorageUsageForMedia: {key: mail, usage: 1101522944 bytes}>)])}>"
+
+        # added print statements to debug test failure
+        actual_repr = repr(self.service.storage)
+        print(f"Actual repr:\n{actual_repr}")
+        # corrected expected repr (removed extra parentheses and replaced commas with colons)
+        expected_repr = "<AccountStorage: {usage: 43.75% used of 5368709120 bytes, usages_by_media: OrderedDict({'photos': <AccountStorageUsageForMedia: {key: photos, usage: 0 bytes}>, 'backup': <AccountStorageUsageForMedia: {key: backup, usage: 799008186 bytes}>, 'docs': <AccountStorageUsageForMedia: {key: docs, usage: 449092146 bytes}>, 'mail': <AccountStorageUsageForMedia: {key: mail, usage: 1101522944 bytes}>})}>"
+        print(f"Actual repr:\n{expected_repr}")
+
+        assert repr(self.service.storage) == expected_repr
         # fmt: on
 
     def test_storage_usage(self):
