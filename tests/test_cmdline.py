@@ -6,6 +6,7 @@ from unittest.mock import patch
 
 import pytest
 from pyicloud import cmdline
+from pyicloud.cmdline import sanitize_filename
 
 from . import PyiCloudServiceMock
 from .const import AUTHENTICATED_USER, REQUIRES_2FA_USER, VALID_2FA_CODE, VALID_PASSWORD
@@ -103,8 +104,9 @@ class TestCmdline(TestCase):
         devices = FMI_FAMILY_WORKING.get("content")
         for device in devices:
             file_name = device.get("name").strip().lower() + ".fmip_snapshot"
+            sanitized_filename = sanitize_filename(file_name)
 
-            pickle_file = open(file_name, "rb")
+            pickle_file = open(sanitized_filename, "rb")
             assert pickle_file
 
             contents = []
@@ -117,4 +119,4 @@ class TestCmdline(TestCase):
             assert contents == [device]
 
             pickle_file.close()
-            os.remove(file_name)
+            os.remove(sanitized_filename)

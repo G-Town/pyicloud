@@ -6,6 +6,7 @@ command line scripts, and related.
 import argparse
 import pickle
 import sys
+import re
 
 from click import confirm
 
@@ -15,6 +16,14 @@ from . import utils
 
 DEVICE_ERROR = "Please use the --device switch to indicate which device to use."
 
+def sanitize_filename(filename):
+    """
+    Sanitize the filename by removing or replacing invalid characters,
+    including whitespace, with underscores. This will avoid OS errors
+    """
+    # Replace invalid characters and whitespace with underscores
+    sanitized = re.sub(r'[<>:"/\\|?*\s]', '_', filename)
+    return sanitized
 
 def create_pickled_data(idevice, filename):
     """
@@ -24,7 +33,10 @@ def create_pickled_data(idevice, filename):
     This allows the data to be used without resorting to screen / pipe
     scrapping.
     """
-    with open(filename, "wb") as pickle_file:
+    # Sanitize the filename
+    sanitized_filename = sanitize_filename(filename)
+
+    with open(sanitized_filename, "wb") as pickle_file:
         pickle.dump(idevice.content, pickle_file, protocol=pickle.HIGHEST_PROTOCOL)
 
 
