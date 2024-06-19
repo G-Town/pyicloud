@@ -604,7 +604,7 @@ class PyiCloudService:
     
     @property
     def notes(self):
-        service_root = self.webservices['notes']['url']
+        service_root = self._get_webservice_url("notes")
         return NotesService(service_root, self.session, self.params)
 
     def __str__(self):
