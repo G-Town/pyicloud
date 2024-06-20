@@ -41,7 +41,8 @@ class NotesService(object):
         #req = self.session.get(self._service_root + "/no/startup", params=params_notes)
         logging.debug(f"Requesting notes with parameters: {params_notes}")
         try:
-            req = self.session.get(self._service_root + "/no/startup", params=params_notes)
+            # req = self.session.get(self._service_root + "/no/startup", params=params_notes)
+            req = self.session.get(self._service_root + "/startup", params=params_notes)
             req.raise_for_status()  # Raises an HTTPError if the HTTP request returned an unsuccessful status code
         except Exception as e:
             logging.error(f"Error fetching notes: {e}")
