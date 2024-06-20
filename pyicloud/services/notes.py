@@ -5,6 +5,7 @@
 # import json
 from tzlocal import get_localzone
 import re
+import logging
 
 
 class NotesService(object):
@@ -29,13 +30,28 @@ class NotesService(object):
     def refresh(self):
         params_notes = dict(self.params)
         params_notes.update(
-            {"clientVersion": "4.0", "lang": "en-us", "usertz": get_localzone().zone}
+            {
+                "clientVersion": "4.0",
+                "lang": "en-us",
+                "usertz": get_localzone().zone
+            }
         )
 
         # Open notes
-        req = self.session.get(self._service_root + "/no/startup", params=params_notes)
+        #req = self.session.get(self._service_root + "/no/startup", params=params_notes)
+        logging.debug(f"Requesting notes with parameters: {params_notes}")
+        try:
+            req = self.session.get(self._service_root + "/no/startup", params=params_notes)
+            req.raise_for_status()  # Raises an HTTPError if the HTTP request returned an unsuccessful status code
+        except Exception as e:
+            logging.error(f"Error fetching notes: {e}")
+            return
 
-        startup = req.json()
+        try:
+            startup = req.json()
+        except ValueError as e:
+            logging.error(f"Error parsing notes response: {e}")
+            return
 
         self.collections = {}
 
