@@ -33,7 +33,7 @@ class NotesService(object):
             {
                 "clientVersion": "4.0",
                 "lang": "en-us",
-                "usertz": get_localzone().zone
+                "usertz": get_localzone().key
             }
         )
 
