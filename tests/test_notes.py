@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, patch, Mock
 from pyicloud.services.notes import NotesService
 
 class NotesServiceTest(unittest.TestCase):
@@ -7,7 +7,13 @@ class NotesServiceTest(unittest.TestCase):
 
     def setUp(self):
         """Set up tests."""
-        self.mock_session = MagicMock()
+        self.mock_session = Mock()
+        self.mock_session.service = Mock()
+        self.mock_session.service.data = {
+            "dsInfo": {
+                "dsid": "mock_dsid",
+            }
+        }
         self.mock_params = {
             "dsid": "mock_dsid",
         }
@@ -52,7 +58,11 @@ class NotesServiceTest(unittest.TestCase):
             {"data": "mock_data"}
         ]
 
+        # Adding debug print statements
+        print("Before refresh")
         self.notes_service.refresh()
+        print("After refresh")
+        print(self.notes_service.records)
 
         self.assertEqual(len(self.notes_service.records), 1)
         note = self.notes_service.records[0]
