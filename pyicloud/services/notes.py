@@ -78,7 +78,7 @@ class NotesService(object):
                 url, data=body, headers={"Content-type": "text/plain"}
             )
 
-            print(request.json())
+            # print(request.json())
             zone = request.json()["zones"][0]
 
             records = []
