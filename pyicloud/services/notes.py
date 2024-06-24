@@ -123,7 +123,10 @@ class NotesService(object):
             '''Resolve Notes' Detail.'''
 
             def resolver(last, current):
+                print("resolver...")
                 if current["recordType"] == "Note" or current["recordType"] == "Note_UserSpecific":
+                    print("record type:")
+                    print(current["recordType"])
                     current["fields"]["title"] = base64.b64decode(current["fields"]["TitleEncrypted"]["value"]).decode(
                         'utf-8')
                     current["fields"]["snippet"] = base64.b64decode(current["fields"]["SnippetEncrypted"]["value"]).decode(
