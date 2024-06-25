@@ -77,7 +77,7 @@ def test_icloud_sync():
     assert notes is not None, "Failed to fetch notes"
     assert isinstance(notes, list), "Notes should be a list"
     if notes:
-        # assert "fields" in notes[0], "Each note should have fields"
+        assert "fields" in notes[0], "Each note should have fields"
         assert "title" in notes[0]["fields"], "Each note should have a title field"
         print("\nfetched notes:")
         for note in notes:
@@ -85,17 +85,19 @@ def test_icloud_sync():
             # for item in note:
             #     items.append(item)
             # print(items)
-            fields = []
-            for field in note["fields"]:
-                fields.append(field)
-            print(fields)
-            print(note["fields"]["Deleted"])
+            # fields = list(note["fields"].keys())
+            # print(fields)
+            if "Deleted" in note["fields"]:
+                deleted = note["fields"]["Deleted"]["value"]
+                # print("deleted: ", deleted)
+                if deleted:
+                    continue
             print("title: " + note["fields"]["title"])
             print("snippet: " + note["fields"]["snippet"])
-            # print("Text:")
-            # for item in note["fields"]["Text"]:
-            #     print(item)
-            # print(note["fields"]["Text"]["substring"])
+            print("Text:")
+            for item in note["fields"]["Text"]:
+                print(item)
+            print(note["fields"]["Text"]["string"])
             print()
 
 
