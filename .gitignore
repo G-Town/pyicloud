@@ -1,5 +1,6 @@
 # environment
 .pi_env
+.env
 
 # Python
 *.py[cod]
