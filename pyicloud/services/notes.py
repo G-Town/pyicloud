@@ -45,19 +45,18 @@ class NotesService:
                             "desiredKeys": [
                                 "TitleEncrypted",
                                 "SnippetEncrypted",
-                                "FirstAttachmentUTIEncrypted",
-                                "FirstAttachmentThumbnail",
-                                "FirstAttachmentThumbnailOrientation",
+                                # "FirstAttachmentUTIEncrypted",
+                                # "FirstAttachmentThumbnail",
+                                # "FirstAttachmentThumbnailOrientation",
                                 "ModificationDate",
                                 "Deleted",
                                 "Folders",
                                 "Folder",
-                                "Attachments",
+                                # "Attachments",
                                 "ParentFolder",
-                                "Folder",
                                 "Note",
                                 "LastViewedModificationDate",
-                                "MinimumSupportedNotesVersion",
+                                # "MinimumSupportedNotesVersion",
                             ],
                             "desiredRecordTypes": [
                                 "Note",
@@ -117,9 +116,14 @@ class NotesService:
             )
 
             def resolver(last, current):
-                # moved handling of user specific notes
+
+                # TODO: resolve folders
+                # if current["recordType"] in ["Folder"]:
+                #     print("resolve folder")
+
+                # moved handling of user specific notes, only resolve "Notes" here
                 if current["recordType"] in ["Note"]:
-                    # print("handle note")
+                    # print("resolve note")
                     current["fields"]["title"] = base64.b64decode(
                         current["fields"]["TitleEncrypted"]["value"]
                     ).decode("utf-8")
@@ -147,6 +151,8 @@ class NotesService:
                     current["fields"]["Text"] = MessageToDict(proto_string)
 
                     last.append(current)
+
+                # TODO: resolve search indexes
 
                 # TODO: handle records of recordType Note_UserSpecific
                 # if current["recordType"] in ["Note_UserSpecific"]:

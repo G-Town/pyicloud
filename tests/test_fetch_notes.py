@@ -57,22 +57,22 @@ def test_icloud_sync():
     # Test fetching folders
     # print("fetching folders")
     # folders = icloud_service.fetch_folders()
+    # print(folders)
     # assert folders is not None, "Failed to fetch folders"
     # assert isinstance(folders, list), "Folders should be a list"
     # if folders:
     #     assert "recordName" in folders[0], "Each folder should have a recordName"
     #     for folder in folders:
-    #         # print(folder)
+    #         print(folder)
     #         if "notes" in folder:
     #             for note in folder["notes"]:
-    #                 # print(note["fields"])
+    #                 print(note["fields"])
     #                 assert "fields" in note, "Each note should have fields"
     #                 assert (
     #                     "title" in note["fields"]
     #                 ), "Each note should have a title field"
 
     # Test fetching notes
-    print("fetching notes")
     notes = icloud_service.fetch_notes()
     assert notes is not None, "Failed to fetch notes"
     assert isinstance(notes, list), "Notes should be a list"
@@ -81,23 +81,26 @@ def test_icloud_sync():
         assert "title" in notes[0]["fields"], "Each note should have a title field"
         print("\nfetched notes:")
         for note in notes:
-            # items = []
-            # for item in note:
-            #     items.append(item)
+            items = []
+            for item in note:
+                items.append(item)
             # print(items)
-            # fields = list(note["fields"].keys())
-            # print(fields)
+            fields = list(note["fields"].keys())
             if "Deleted" in note["fields"]:
                 deleted = note["fields"]["Deleted"]["value"]
                 # print("deleted: ", deleted)
                 if deleted:
                     continue
+            # print(fields)
             print("title: " + note["fields"]["title"])
-            print("snippet: " + note["fields"]["snippet"])
-            print("Text:")
-            for item in note["fields"]["Text"]:
-                print(item)
-            print(note["fields"]["Text"]["string"])
+            print("Folders:")
+            print(note["fields"]["Folders"])
+            # print(note["fields"]["Folder"])
+            # print("snippet: " + note["fields"]["snippet"])
+            # print("Text:")
+            # for item in note["fields"]["Text"]:
+            #     print(item)
+            # print(note["fields"]["Text"]["string"])
             print()
 
 
