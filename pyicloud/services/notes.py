@@ -50,12 +50,12 @@ class NotesService:
                                 # "FirstAttachmentThumbnailOrientation",
                                 "ModificationDate",
                                 "Deleted",
-                                "Folders",
+                                # "Folders",
                                 "Folder",
                                 # "Attachments",
                                 "ParentFolder",
                                 "Note",
-                                "LastViewedModificationDate",
+                                # "LastViewedModificationDate",
                                 # "MinimumSupportedNotesVersion",
                             ],
                             "desiredRecordTypes": [
@@ -117,10 +117,7 @@ class NotesService:
 
             def resolver(last, current):
 
-                # TODO: resolve folders
-                # if current["recordType"] in ["Folder"]:
-                #     print("resolve folder")
-
+                # resolve notes
                 # moved handling of user specific notes, only resolve "Notes" here
                 if current["recordType"] in ["Note"]:
                     # print("resolve note")
@@ -152,22 +149,31 @@ class NotesService:
 
                     last.append(current)
 
+                # resolve folders
+                if current["recordType"] in ["Folder"]:
+                    # print("resolve folder")
+                    # print(current["fields"])
+                    current["fields"]["title"] = base64.b64decode(
+                        current["fields"]["TitleEncrypted"]["value"]
+                    ).decode("utf-8")
+                    last.append(current)
+
+                # resolve timestamp
+
                 # TODO: resolve search indexes
 
                 # TODO: handle records of recordType Note_UserSpecific
                 # if current["recordType"] in ["Note_UserSpecific"]:
-                    # print("handle user specific note")
-                    # userSpecific_fields = current["fields"]
-                    # fields_list = []
-                    # for field in userSpecific_fields:
-                    #     fields_list.append(field)
-                    # print(fields_list)
-                    # for item in current:
-                    #     print(item)
-                    # print(current["fields"]["Note"])
-                    # print()
-
-
+                #     print("handle user specific note")
+                #     userSpecific_fields = current["fields"]
+                #     fields_list = []
+                #     for field in userSpecific_fields:
+                #         fields_list.append(field)
+                #     print(fields_list)
+                #     for item in current:
+                #         print(item)
+                #     print(current["fields"]["Note"])
+                #     print()
 
                 return last
 
@@ -188,6 +194,7 @@ class NotesService:
         folder_records = [
             record for record in self.records if record["recordType"] == "Folder"
         ]
+        # print(folder_records)
         for folder in folder_records:
             folder["notes"] = [
                 note for note in self.notes if self._is_note_in_folder(note, folder)
