@@ -57,24 +57,31 @@ def test_icloud_sync():
     # Test fetching folders
     # print("fetching folders")
     folders = icloud_service.fetch_folders()
-    # print(folders)
     assert folders is not None, "Failed to fetch folders"
     assert isinstance(folders, list), "Folders should be a list"
     if folders:
-        assert "recordName" in folders[0], "Each folder should have a recordName"
-        print("\nfetched folders:")
+        print("\nfetched folders:\n")
         for folder in folders:
-            print(folder["fields"]["title"])
-            # print(folder["fields"].keys())
-            if "notes" in folder:
-                for note in folder["notes"]:
-                    assert "fields" in note, "Each note should have fields"
-                    assert (
-                        "title" in note["fields"]
-                    ), "Each note should have a title field"
-                    # print(note["fields"]["title"])
-                    # print(note["fields"].keys())
-            # print()
+            print(folder.keys())
+            print(folder["fields"]["title"]+" -- record name: "+folder["recordName"])
+            if "parent" in folder:
+                print("parent folder: "+folder["parent"]["recordName"])
+            if "notes" not in folder:
+                continue
+            for note in folder["notes"]:
+                assert "fields" in note, "Each note should have fields"
+                assert (
+                    "title" in note["fields"]
+                ), "Each note should have a title field"
+                print(" - " + note["fields"]["title"])
+                # print(note["fields"].keys())
+                # print(note["fields"]["Text"].keys())
+                # print(note["fields"].get("snippet"))
+                # timestamp = note["fields"]["ModificationDate"]["value"]
+                # timestamp_to_unix = round(timestamp / 1000)
+                # date_time = datetime.datetime.fromtimestamp(timestamp_to_unix)
+                # print(date_time)
+            print()
 
     # Test fetching notes
     # notes = icloud_service.fetch_notes()
@@ -98,18 +105,18 @@ def test_icloud_sync():
     #         # print(fields)
     #         print("title: " + note["fields"]["title"])
     #         # print("Folders:")
-    #         print(note["fields"]["Folders"])
-    #         print(note["fields"]["Folder"])
+    #         # print(note["fields"]["Folders"])
+    #         # print(note["fields"]["Folder"])
     #         # print("snippet: " + note["fields"]["snippet"])
     #         # print("Text:")
     #         # for item in note["fields"]["Text"]:
     #         #     print(item)
-    #         # print(note["fields"]["Text"]["string"])
-    #         timestamp = note["fields"]["ModificationDate"]["value"]
-    #         timestamp_to_unix = round(timestamp / 1000)
+    #         print(note["fields"]["Text"].keys())
+    #         # timestamp = note["fields"]["ModificationDate"]["value"]
+    #         # timestamp_to_unix = round(timestamp / 1000)
     #         # print(timestamp)
-    #         date_time = datetime.datetime.fromtimestamp(timestamp_to_unix)
-    #         print(date_time)
+    #         # date_time = datetime.datetime.fromtimestamp(timestamp_to_unix)
+    #         # print(date_time)
     #         # print(note["fields"]["LastViewedModificationDate"])
     #         print()
 
