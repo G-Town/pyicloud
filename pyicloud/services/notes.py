@@ -59,12 +59,12 @@ class NotesService:
                                 # "MinimumSupportedNotesVersion",
                             ],
                             "desiredRecordTypes": [
-                                "Note",
-                                "SearchIndexes",
-                                "Folder",
+                                # "Note",
+                                # "SearchIndexes",
+                                # "Folder",
                                 # "PasswordProtectedNote",
-                                "User",
-                                "Users",
+                                # "User",
+                                # "Users",
                                 # "Note_UserSpecific",
                                 # "cloudkit.share",
                             ],
@@ -120,13 +120,18 @@ class NotesService:
                 # resolve notes
                 # moved handling of user specific notes, only resolve "Notes" here
                 if current["recordType"] in ["Note"]:
-                    # print("resolve note")
+                    print("resolve note")
                     current["fields"]["title"] = base64.b64decode(
                         current["fields"]["TitleEncrypted"]["value"]
                     ).decode("utf-8")
-                    current["fields"]["snippet"] = base64.b64decode(
-                        current["fields"]["SnippetEncrypted"]["value"]
-                    ).decode("utf-8")
+                    print(current["fields"]["title"])
+                    # grab snippet only if it exists
+                    if ("SnippetEncrypted" in current["fields"]):
+                        current["fields"]["snippet"] = base64.b64decode(
+                            current["fields"]["SnippetEncrypted"]["value"]
+                        ).decode("utf-8")
+                    else:
+                        current["fields"]["snippet"] = ""
 
                     text_data = base64.b64decode(
                         current["fields"]["TextDataEncrypted"]["value"]
