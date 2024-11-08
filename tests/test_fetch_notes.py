@@ -62,8 +62,9 @@ def test_icloud_sync():
     if folders:
         print("\nfetched folders:\n")
         for folder in folders:
+            print(folder.keys())
             print(folder["fields"].keys())
-            print(folder["fields"]["title"]+" -- record name: "+folder["recordName"])
+            # print(folder["fields"]["title"]+" -- record name: "+folder["recordName"])
             # if "parent" in folder:
             #     print("parent folder: "+folder["parent"]["recordName"])
             if "notes" not in folder:
@@ -74,7 +75,7 @@ def test_icloud_sync():
                     "title" in note["fields"]
                 ), "Each note should have a title field"
             #     print(" - " + note["fields"]["title"])
-                print(note["fields"].keys())
+                # print(note["fields"].keys())
                 # print(note["fields"]["Text"].keys())
                 # print(note["fields"].get("snippet"))
                 # timestamp = note["fields"]["ModificationDate"]["value"]

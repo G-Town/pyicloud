@@ -120,11 +120,11 @@ class NotesService:
                 # resolve notes
                 # moved handling of user specific notes, only resolve "Notes" here
                 if current["recordType"] in ["Note"]:
-                    print("resolve note")
+                    # print("resolve note")
                     current["fields"]["title"] = base64.b64decode(
                         current["fields"]["TitleEncrypted"]["value"]
                     ).decode("utf-8")
-                    print(current["fields"]["title"])
+                    # print(current["fields"]["title"])
                     # grab snippet only if it exists
                     if ("SnippetEncrypted" in current["fields"]):
                         current["fields"]["snippet"] = base64.b64decode(
